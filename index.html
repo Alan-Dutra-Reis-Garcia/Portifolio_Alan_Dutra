@@ -2,31 +2,702 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Reprodução de Vídeo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfólio - Alan Dutra</title>
   <style>
-    body, html {
-      margin: 0;
-      padding: 0;
+    /* Variáveis CSS */
+    :root {
+      --cor-principal: #003366;
+      --cor-fundo: #f4f4f4;
+      --cor-texto: #333;
+      --cor-bloco-fundo: #ffffff;
+      --cor-borda-destaque: #003366;
+      --cor-tempo: #555;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2.5em;
+      background-color: var(--cor-fundo);
+      color: var(--cor-texto);
+      line-height: 1.7;
+    }
+
+    /* Cabeçalho principal do site */
+    .site-header {
+      text-align: center;
+      margin-bottom: 3em;
+      padding-bottom: 1em;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .site-header h1 {
+      color: var(--cor-principal);
+      font-size: 2.8em;
+      margin-bottom: 0.1em;
+    }
+
+    .site-header p {
+      margin: 0.3em 0;
+      font-size: 1.1em;
+      color: #666;
+    }
+
+    h2 {
+      color: var(--cor-principal);
+      text-align: center;
+      margin-top: 1.5em;
+      margin-bottom: 0.5em;
+      font-size: 1.8em;
+    }
+
+    h3 {
+      color: var(--cor-principal);
+      font-size: 1.5em;
+      margin-top: 1.5em;
+      margin-bottom: 0.8em;
+      text-align: center; /* Centraliza títulos de seções de mídia por padrão */
+    }
+
+    /* Ajuste para h3 que contém um link de download para alinhamento */
+    h3.with-download-link {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left; /* Alinha o texto do h3 à esquerda quando tem download link */
+    }
+
+    h4 { /* Estilo para os títulos das subseções dentro dos blocos de conteúdo */
+        color: var(--cor-principal);
+        font-size: 1.2em;
+        margin-top: 1.5em;
+        margin-bottom: 0.8em;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 0.5em;
+    }
+
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-disciplina {
+      text-align: center;
+      margin-bottom: 2em;
+      font-size: 0.95em;
+    }
+
+    /* Estilo para o tópico colapsável */
+    details {
+      background: var(--cor-bloco-fundo);
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 2em;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Sombra mais destacada */
+    }
+
+    details summary {
+      display: block; /* Garante que o summary ocupe toda a largura */
+      padding: 1.2em 1.5em;
+      background-color: var(--cor-principal);
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.3em;
+      cursor: pointer;
+      border-radius: 8px 8px 0 0;
+      position: relative; /* Para posicionar a seta */
+    }
+
+    /* Seta personalizada para o summary */
+    details summary::before {
+      content: '►'; /* Seta direita */
+      position: absolute;
+      right: 1.5em;
+      top: 50%;
+      transform: translateY(-50%) rotate(0deg);
+      transition: transform 0.2s ease;
+      color: #fff;
+    }
+
+    details[open] summary::before {
+      content: '▼'; /* Seta para baixo quando aberto */
+      transform: translateY(-50%) rotate(0deg);
+    }
+
+    /* Conteúdo dentro dos detalhes */
+    details > div {
+      padding: 1.5em;
+    }
+
+    .fichamento-item {
+      margin-bottom: 2em;
+      padding: 1.2em;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      background-color: #fcfcfc;
+    }
+
+    .fichamento-item h4 { /* Este h4 é para os títulos dos fichamentos */
+      color: var(--cor-principal);
+      font-size: 1.2em;
+      margin-top: 0;
+      margin-bottom: 0.8em;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.5em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap; /* Permite quebrar linha em telas pequenas */
+    }
+
+    /* Estilo para os botões de download (aplicado em h4 a e h3 a) */
+    .fichamento-item h4 a,
+    .bloco-roteiro-podcast h3 a, /* Altera para a nova classe de roteiro do podcast */
+    .sarau-container h3 a, /* Adicionado para o sarau (aqui é o link do título da seção) */
+    .sarau-image-display .download-button-standalone { /* Botão de download abaixo da imagem visualizada */
+        font-size: 0.8em;
+        color: var(--cor-principal);
+        text-decoration: none;
+        margin-left: 10px;
+        padding: 5px 10px;
+        border: 1px solid var(--cor-principal);
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        white-space: nowrap; /* Evita quebrar o botão de download */
+    }
+
+    .fichamento-item h4 a:hover,
+    .bloco-roteiro-podcast h3 a:hover, /* Altera para a nova classe de roteiro do podcast */
+    .sarau-container h3 a:hover, /* Adicionado para o sarau */
+    .sarau-image-display .download-button-standalone:hover { /* Botão de download abaixo da imagem visualizada */
+        background-color: var(--cor-principal);
+        color: #fff;
+    }
+
+    .fichamento-item .secao-fichamento {
+      margin-bottom: 1em;
+    }
+
+    .fichamento-item .secao-fichamento strong {
+      display: block;
+      margin-bottom: 0.5em;
+      color: #444;
+    }
+
+    .fichamento-item .referencia-fichamento {
+      font-size: 0.9em;
+      color: #777;
+      margin-top: 1.5em;
+      border-top: 1px dashed #eee;
+      padding-top: 1em;
+    }
+    
+    /* Estilo específico para o bloco do podcast */
+    .podcast-info {
+        text-align: center;
+        margin-bottom: 1.5em;
+        font-size: 1.1em;
+    }
+
+    .podcast-info a {
+        color: var(--cor-principal);
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .podcast-info a:hover {
+        text-decoration: underline;
+    }
+
+    .audio-player-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 1.5em;
+        margin-bottom: 2em;
+    }
+
+    .audio-player-container audio {
+        width: 100%;
+        max-width: 600px; /* Limita a largura do player de áudio */
+    }
+
+    .bloco { /* Usado para os blocos de roteiro da vídeo-resenha */
+      background: var(--cor-bloco-fundo);
+      padding: 1.5em;
+      border-left: 5px solid var(--cor-borda-destaque);
+      margin-bottom: 1.8em;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      border-radius: 4px;
+    }
+
+    .bloco-roteiro-podcast { /* Nova classe para os blocos de roteiro do podcast */
+      background: var(--cor-bloco-fundo);
+      padding: 1.5em;
+      border-left: 5px solid #6c757d; /* Uma cor diferente para distinção, se quiser */
+      margin-bottom: 1.8em;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      border-radius: 4px;
+    }
+    
+    .bloco-roteiro-podcast p {
+        margin-bottom: 1em;
+    }
+
+    .bloco-roteiro-podcast strong {
+        color: var(--cor-principal); /* Cor para os títulos de seções dentro do roteiro */
+        display: block;
+        margin-bottom: 0.5em;
+        font-size: 1.1em;
+    }
+
+
+    .tempo {
+      font-weight: bold;
+      color: var(--cor-tempo);
+      margin-bottom: 0.8em;
+      display: block;
+    }
+
+    .media-container {
+      background-color: var(--cor-bloco-fundo);
+      padding: 1.5em;
+      border: 2px dashed var(--cor-borda-destaque);
+      margin-bottom: 2em;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border-radius: 4px;
+    }
+
+    .video-responsive-container {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      height: 0;
+      overflow: hidden;
+      max-width: 100%;
+      background: #000;
+      margin-top: 1em;
+    }
+
+    .video-responsive-container video {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      overflow: hidden; /* Hides scrollbars if content overflows */
+      border: 0;
     }
-    video {
-      position: fixed; /* Stays in place when scrolling */
-      right: 0;
-      bottom: 0;
-      min-width: 100%; /* Ensures video covers at least 100% width */
-      min-height: 100%; /* Ensures video covers at least 100% height */
-      width: auto;
-      height: auto;
-      z-index: -100; /* Puts video behind other content */
-      background-size: cover; /* Ensures video scales nicely */
+
+    /* Estilos para o Tópico 4 - Sarau */
+    .sarau-container { /* Novo container para o conteúdo do Sarau */
+      padding: 1.5em;
+      background: var(--cor-bloco-fundo);
+      border: 2px dashed #a0a0a0; /* Uma borda pontilhada ou tracejada para agrupar visualmente */
+      border-radius: 8px;
+      margin-bottom: 2em;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      text-align: left; /* Alinha o texto do sarau à esquerda por padrão */
+    }
+
+    .sarau-image-display { /* Container para a imagem da produção artística e seu botão de download */
+        text-align: center; /* Centraliza a imagem e o botão de download */
+        margin-bottom: 2em;
+    }
+
+    .sarau-image-display img {
+        max-width: 100%;
+        height: auto; /* Mantém a proporção da imagem */
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        margin-bottom: 1em; /* Espaço entre a imagem e o botão */
+    }
+
+    .sarau-container > h3 { /* Título principal dentro do sarau-container, como "Produção Artística (Descrição)" */
+        color: var(--cor-principal);
+        font-size: 1.5em;
+        margin-top: 0; /* Ajustado para estar mais próximo do topo do sarau-container */
+        margin-bottom: 1em;
+        text-align: center; /* Centraliza o título "Produção Artística" */
+        border-bottom: 1px solid #eee;
+        padding-bottom: 0.5em;
+    }
+
+    .sarau-item-content { /* Subseções da produção artística e produções similares */
+        background-color: #fcfcfc;
+        padding: 1.2em;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        margin-bottom: 1.5em;
+    }
+
+    .sarau-item-content:last-child {
+        margin-bottom: 0;
+    }
+
+    .sarau-item-content h4 { /* Títulos menores dentro das seções (Título da obra, Justificativa, Música, História, Arte) */
+        color: var(--cor-principal);
+        font-size: 1.2em;
+        margin-top: 0.8em;
+        margin-bottom: 0.5em;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 0.3em;
+    }
+
+    .sarau-item-content img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 1.5em auto; /* Centraliza a imagem e dá espaço */
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .sarau-item-content iframe.spotify-embed {
+        display: block;
+        margin: 1.5em auto; /* Centraliza o embed do Spotify */
+        max-width: 100%; /* Garante que não ultrapasse a largura do container */
+    }
+
+
+    footer {
+      margin-top: 3em;
+      text-align: center;
+      font-size: 0.9em;
+      color: #777;
+      padding-top: 1em;
+      border-top: 1px solid #eee;
+    }
+
+    /* Pequenos ajustes para telas muito pequenas */
+    @media (max-width: 600px) {
+        body {
+            margin: 1em;
+        }
+        .site-header h1 {
+            font-size: 2em;
+        }
+        .site-header p {
+            font-size: 1em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+        h3 {
+            font-size: 1.3em;
+        }
+        details summary {
+            font-size: 1.1em;
+            padding: 1em;
+        }
+        details summary::before {
+            right: 1em;
+        }
+        details > div {
+            padding: 1em;
+        }
+        .bloco, .bloco-roteiro-podcast, .sarau-container { /* Incluído sarau-container aqui */
+            padding: 1em;
+        }
+        .media-container {
+            padding: 1em;
+        }
+        .fichamento-item h4,
+        .bloco h3.with-download-link,
+        .sarau-container h3.with-download-link { /* Garante empilhamento para h3 do sarau também */
+            flex-direction: column;
+            align-items: flex-start;
+            padding-right: 10px; /* Ajusta padding para telas pequenas */
+        }
+        .fichamento-item h4 a,
+        .bloco h3 a,
+        .sarau-container h3 a, /* Ajusta botões em telas pequenas */
+        .sarau-image-display .download-button-standalone { /* Ajusta o botão standalone em telas pequenas */
+            margin-top: 10px;
+            margin-left: 0;
+            width: fit-content; /* Para não ocupar 100% da largura */
+        }
     }
   </style>
 </head>
 <body>
-  <video controls autoplay muted loop> <source src="seu_video.mp4" type="video/mp4">
-    Seu navegador não suporta a tag de vídeo.
-  </video>
-  </body>
+
+  <header class="site-header">
+    <h1>Portfólio - Alan Dutra</h1>
+    <p><strong>RA:</strong> 119415</p>
+    <p><strong>Matéria:</strong> Geografia das Indústrias</p>
+    <p><strong>Professora:</strong> Dr.a Jessica Soares de Freitas </p>
+  </header>
+
+  <main>
+    <details open>
+      <summary>Tópico 1 - Fichamentos</summary>
+      <div>
+        <h2>Fichamentos de Artigos</h2>
+
+        <div class="fichamento-item">
+          <h4>
+            UM NOVO MAPA DA INDÚSTRIA NO BRASIL, DE 1995 A 2015
+            <a href="Fichamento 1.pdf" download="Fichamento 1.pdf">Download PDF</a>
+          </h4>
+          <div class="secao-fichamento">
+            <strong>Introdução:</strong>
+            <p>No capítulo "Um novo mapa da indústria no Brasil, de 1995 a 2015", os autores apresentam a motivação de analisar como se deram as transformações territoriais da indústria brasileira no período pós-redemocratização. Partindo do pressuposto de que as aglomerações industriais tradicionais vêm sofrendo processos de dispersão e reagrupamento, o estudo tem como objetivo principal mapear as Aglomerações Industriais Relevantes (AIRs) e potenciais (AIPs), comparar sua evolução com o período 1970-1991 e identificar vetores de desconcentração e expansão regional do emprego industrial.</p>
+          </div>
+          <div class="secao-fichamento">
+            <strong>Desenvolvimento:</strong>
+            <p>Para tanto, utiliza-se como unidade de análise as microrregiões do IBGE, definindo-se AIRs aquelas com pelo menos 10 000 empregos industriais formais e AIPs, de 1 000 a 9 999 empregos. Os dados de emprego, abrangendo setores extrativo e de transformação, foram extraídos da RAIS/ME para os anos de 1995, 2000, 2005, 2010 e 2015, permitindo o cálculo das taxas geométricas de crescimento anual em cada microrregião. As microrregiões foram agrupadas em tipologias inspiradas em Diniz & Crocco (1996), possibilitando comparações espacialmente consistentes. Os resultados mostram que o número de AIRs quase dobrou, passando de 85 em 1995 para 160 em 2015, concentrando cerca de 84% do emprego industrial nacional. Observou-se uma desaceleração média do crescimento anual nessas AIRs de 3,5% no período 1970-1991 para 1,88% em 1995-2015 ao mesmo tempo em que cresceu a variabilidade desse desempenho, com algumas regiões tradicionais (por exemplo, São Paulo e Rio de Janeiro) registrando retração absoluta. Os autores identificam um processo que denominam "desconcentração concentrada": embora haja expansão do polo sudeste para o Centro-Oeste e o interior do Sul, não se observa dispersão significativa para o Norte ou o interior do Nordeste. Ademais, destacam o surgimento de novos polos de alto crescimento (Grupo I), como Macaé, cuja taxa anual ultrapassou 9% no período analisado.</p>
+          </div>
+          <div class="secao-fichamento">
+            <strong>Conclusão:</strong>
+            <p>Conclui-se que, apesar de existirem indícios de desconcentração principalmente em direção ao Centro-Oeste e ao Sul interiorizado, persistem fortes forças aglomerativas no sudeste, que continua respondendo pela maior parte do emprego industrial. Essa manutenção de disparidades regionais, ainda que em leve declínio no peso relativo (de 65% para 53,6% do emprego em AIRs), aponta para a necessidade de investigações adicionais sobre fatores institucionais e territoriais que limitam uma dispersão mais ampla. Os autores sugerem aprofundar o estudo das políticas públicas e dos marcos regulatórios que influenciam esses vetores de desconcentração.</p>
+          </div>
+          <div class="referencia-fichamento">
+            <strong>Referência bibliográfica:</strong> MONTEIRO NETO, Aristides; SILVA, Raphael de Oliveira; SEVERIAN, Danilo. Um novo mapa da indústria no Brasil, de 1995 a 2015. In: MONTEIRO NETO, Aristides (org.). Brasil, Brasis: reconfigurações territoriais da indústria no século XXI. Brasília: Ipea, 2021. p. 235-254.</p>
+          </div>
+        </div>
+
+        <div class="fichamento-item">
+          <h4>
+            Áreas de atração de investimentos em um espaço econômico cambiante: uma tipologia de distritos industriais
+            <a href="Fichamento 2.pdf" download="Fichamento 2.pdf">Download PDF</a>
+          </h4>
+          <div class="secao-fichamento">
+            <strong>Introdução:</strong>
+            <p>Markusen parte do "enigma" de que, apesar da hiper-mobilidade do capital e da força de trabalho, certas regiões mantêm ou até aumentam sua capacidade de atrair e reter investimentos. Ela revisita a literatura sobre "especialização flexível" e novos distritos industriais (NDIs), destacando casos como a Terceira Itália, e aponta a insuficiência desse paradigma para explicar a diversidade de experiências de aglomeração industrial nos Estados Unidos, Japão, Coreia do Sul e Brasil (MARKUSEN, 1995, p. 9-10). O objetivo central do artigo é, portanto, formular uma tipologia mais abrangente de "sticky places" - áreas de atração de investimentos capaz de abarcar diferentes configurações institucionais e organizacionais.</p>
+          </div>
+          <div class="secao-fichamento">
+            <strong>Desenvolvimento:</strong>
+            <p>Para construir essa tipologia, Markusen adota um método indutivo em dois estágios. Primeiro, identifica, via dados de emprego metropolitano (1970-1990), as regiões com crescimento industrial acima da média nacional. Em seguida, seleciona um subconjunto de casos para estudos de caso aprofundados, utilizando dados desagregados, entrevistas com especialistas e análise de redes locais de negócios (MARKUSEN, 1995, p. 11-13). A partir dessa pesquisa, ela distingue quatro tipos ideais de distritos industriais: Marshalliano (e sua variante italiana) Pequenas firmas locais, alta densidade de transações intradistritais, baixo grau de integração vertical e forte identidade comunitária ("aglomeração"), apoiadas por instituições locais de coordenação e financiamento de risco. A variante italiana acrescenta cooperação consciente entre empresas e sindicatos, reforçando estabilidade e inovação (MARKUSEN, 1995, p. 18-20). Centro-Radial (Hub-and-Spoke) Organizado em torno de uma ou poucas grandes "firmas-eixo" que atraem fornecedores e serviços correlatos. A dependência das decisões de investimento e dos ciclos dessas empresas âncora é marcada, ao passo que a cooperação intradistrital é limitada às cadeias de fornecimento principais (MARKUSEN, 1995, p. 21-23). Plataforma-Satélite Conjunto de subsidiárias de corporações multinacionais, instaladas por políticas de atração de investimentos. Apresentam ligação fraca entre si, orientando-se principalmente à matriz, com elevados fluxos de entrada e saída de pessoal especializado, e pouca cooperação local (MARKUSEN, 1995, p. 24-27). Ancorado pelo Estado Regiões cujo dinamismo advém de instituições públicas ou sem fins lucrativos bases militares, universidades, centros de pesquisa que funcionam como "âncoras" do emprego e da renda. A estrutura local de negócios gira em torno dos contratos e gastos dessas entidades, com graus variados de cooperação e impactos distributivos (MARKUSEN, 1995, p. 28-30). Markusen ainda discute como cada tipo se comporta em termos de crescimento, estabilidade cíclica, equidade na distribuição de renda e vulnerabilidade a choques de longo prazo, e ilustra os padrões com exemplos como Detroit, Seattle, Research Triangle Park e a Zona Franca de Manaus. </p>
+          </div>
+          <div class="secao-fichamento">
+            <strong>Conclusão:</strong>
+            <p>A autora conclui que não há um "modelo único" de distrito industrial capaz de explicar as múltiplas formas de aglomeração bem-sucedida no contexto da globalização. Sua tipologia amplia o escopo analítico ao incluir estruturas majoritariamente empresariais (Centro-Radial), plataformas de investimento (Satélite) e ancoragens estatais, além do paradigma marshalliano. Para as políticas de desenvolvimento regional, Markusen recomenda diagnosticar rigorosamente o tipo de "sticky place" presente em cada região e, a partir daí, formular estratégias que explorem as suas fontes de resiliência e rede de atores locais (MARKUSEN, 1995, p. 31-34).</p>
+          </div>
+          <div class="referencia-fichamento">
+            <strong>Referência bibliográfica:</strong> MARKUSEN, Ann. Áreas de atração de investimentos em um espaço econômico cambiante: uma tipologia de distritos industriais. Nova Economia, Belo Horizonte, v. 5, n. 2, p. 9-34, dez. 1995.</p>
+          </div>
+        </div>
+
+        <div class="fichamento-item">
+          <h4>
+            Indústria e território no Brasil: debates, evidências e hipóteses para uma análise contemporânea
+            <a href="Fichamento 3.pdf" download="Fichamento 3.pdf">Download PDF</a>
+          </h4>
+          <div class="secao-fichamento">
+            <strong>Introdução:</strong>
+            <p>Neste capítulo, Aristides Monteiro Neto propõe uma reflexão sobre a transformação estrutural da economia industrial brasileira no território, no período de 1995 a 2018, adotando o método histórico-estrutural para explicitar as trajetórias institucionais, políticas e econômicas que moldaram a localização e o movimento das plantas industriais (MONTEIRO NETO, 2021, p. 42). Formula-se um conjunto de questões norteadoras, entre elas: a natureza da mudança estrutural na indústria; a sua capacidade de dinamizar renda interna e diversificar mercados; o padrão de ocupação do território e as desigualdades regionais; e as implicações para as políticas de desenvolvimento regional (MONTEIRO NETO, 2021, p. 42-43).</p>
+          </div>
+          <div class="secao-fichamento">
+            <strong>Desenvolvimento:</strong>
+            <p>O autor estrutura a análise em três grandes fases históricas da indústria brasileira: 1930-1970 (gênese e expansão concentrada): emergência do complexo industrial paulista, que liderou a urbanização e integrou mercados regionais, concentrando 58,2% da indústria de transformação em 1970 (Cano, 1985) (MONTEIRO NETO, 2021, p. 43). 1970-1990 (desconcentração induzida): ganho relativo de participação de Norte, Nordeste e Centro-Oeste, impulsionado por deseconomias de aglomeração em São Paulo e vultosos investimentos federais em infraestrutura e incentivos fiscais nos PNDs I e II (MONTEIRO NETO, 2021, p. 44). 1990-2018 (desindustrialização e nova desconcentração): crise fiscal dos anos 1990, abertura comercial e financeira, privatizações e Plano Real fragilizam a indústria; contudo, novas aglomerações surgem, majoritariamente ligadas a commodities e a incentivos regionais (MONTEIRO NETO, 2021, p. 45-46). Na sequência, Monteiro Neto discute o debate acadêmico sobre a "desindustrialização natural" (ortodoxa) versus a "precoce" (heterodoxa), destacando evidências de regressão produtiva relativa - redução da complexidade econômica, queda da densidade produtiva, aumento do conteúdo importado e enfraquecimento dos elos intersetoriais e diferenças de produtividade entre ramos (MONTEIRO NETO, 2021, p. 47-50). Em "Território e indústria", retoma-se o conceito de polígono industrial e AIRs (aglomerações industriais relevantes) para mostrar que, apesar da dispersão, permanece forte o papel das economias de aglomeração no Sudeste-Sul, enquanto incentivos fiscais, fundos constitucionais e boom de commodities geram novas AIRs no interior e nas regiões periféricas (MONTEIRO NETO, 2021, p. 51-54). Em "Governo e território (2000-2018)", analisa-se a mudança de orientação entre 1990-2002 (desinvestimento estatal e privatizações) e 2003-2014 (políticas desenvolvimentistas, PAC, elevação do salário mínimo, expansão do crédito e programas sociais), detalhando o montante e a composição dos recursos federais destinados ao investimento público, ao crédito via BNDES e fundos constitucionais, e às transferências de renda (PBF e BPC) nas regiões Norte, Nordeste e Centro-Oeste (MONTEIRO NETO, 2021, p. 55-61). </p>
+          </div>
+          <div class="secao-fichamento">
+            <strong>Conclusão:</strong>
+            <p>Monteiro Neto conclui que o enfraquecimento da indústria, embora acompanhado de desconcentração territorial, não produziu uma nova força motriz capaz de substituir o papel histórico do setor como agente de mudança estrutural. Destaca-se a perda de vigor da integração do mercado nacional e a persistência das economias de aglomeração no polígono Sudeste-Sul, enquanto as regiões periféricas avançam sob a lógica de commodities e incentivos públicos. Para o autor, a "estratégia de mudança estrutural" deve incorporar esses vetores distintos - integração interna versus estímulos externos para enfrentar a armadilha de renda média e recuperar a capacidade industrial de gerar multiplicadores intersetoriais e inter-regionais (MONTEIRO NETO, 2021, p. 62-63). </p>
+          </div>
+          <div class="referencia-fichamento">
+            <strong>Referência bibliográfica:</strong> MONTEIRO NETO, Aristides. Indústria e território no Brasil: debates, evidências e hipóteses para uma análise contemporânea. In: MONTEIRO NETO, Aristides (org.). Brasil, Brasis: reconfigurações territoriais da indústria no século XXI. Brasília: Ipea, 2021. p. 42-63.</p>
+          </div>
+        </div>
+
+      </div>
+    </details>
+
+    <details open>
+      <summary>Tópico 2 - Vídeo Resenha</summary>
+      <div>
+        <h2>Vídeo-Resenha “Obrigado por Fumar” (2007)</h2>
+        <p class="info-disciplina"><strong>Disciplina:</strong> Geografia das Indústrias  |  <strong>Entrega:</strong> 31/05/2025</p>
+
+        <div class="media-container">
+          <h3>Assista o Filme</h3>
+          <div class="video-responsive-container">
+            <video controls>
+              <source src="https://ia600606.us.archive.org/12/items/ObrigadoporFumar/ObrigadoporFumar.mp4" type="video/mp4">
+              Seu navegador não suporta o elemento de vídeo.
+            </video>
+          </div>
+        </div>
+
+        <div class="media-container">
+          <h3>Vídeo/Áudio</h3>
+          <div class="video-responsive-container">
+            <video controls>
+              <source src="seu_video.mp4" type="video/mp4">
+              Seu navegador não suporta o elemento de vídeo.
+            </video>
+          </div>
+        </div>
+
+        <h3>Roteiro Detalhado</h3>
+
+        <div class="bloco">
+          <p class="tempo">[0:00 – 0:40] Abertura / Gancho</p>
+          <p>Você já parou pra pensar como alguém pode defender o cigarro em rede nacional… e ainda sair aplaudido? Pois é, Nick Naylor, o protagonista de <em>Obrigado por Fumar</em>, não só faz isso, como se orgulha disso. Mas o que está por trás desse talento em distorcer os fatos nos ajuda a entender algo muito maior: como funcionam as indústrias no capitalismo globalizado.</p>
+        </div>
+
+        <div class="bloco">
+          <p class="tempo">[0:41 – 1:20] Apresentação do Filme</p>
+          <p>Lançado em 2007 e dirigido por Jason Reitman, <em>Obrigado por Fumar</em> acompanha Nick, um lobista carismático da indústria do tabaco. Sua função? Defender uma mercadoria letal — o cigarro — em nome da liberdade de escolha do consumidor. Com humor ácido e ironia, o filme expõe o poder dos discursos, das estratégias de marketing e da manipulação da informação.</p>
+        </div>
+
+        <div class="bloco">
+          <p class="tempo">[1:21 – 2:30] Conflito e Crítica</p>
+          <p>O conflito central do filme está na tensão entre saúde pública e lucro corporativo. Nick representa uma indústria que terceiriza a responsabilidade: não são os cigarros que matam, mas sim quem escolhe fumar. Essa lógica é muito parecida com o que vimos nos textos discutidos em sala, especialmente com Lipietz e Benko, ao falarem sobre a reestruturação produtiva e a acumulação flexível.</p>
+          <p>O foco não é mais só produzir bens materiais, mas sim produzir significados, influenciar decisões e moldar a opinião pública. A indústria do tabaco aqui é apenas o exemplo mais escancarado de uma lógica muito mais ampla do capitalismo contemporâneo.</p>
+        </div>
+
+        <div class="bloco">
+          <p class="tempo">[2:31 – 4:10] Geografia das Indústrias</p>
+          <p><em>Obrigado por Fumar</em> se conecta com os temas da Geografia das Indústrias de várias formas. Primeiro, ele mostra como o setor terciário – especialmente os serviços de comunicação, advocacia e relações públicas – está cada vez mais central na lógica produtiva.</p>
+          <p>Segundo, vemos a globalização da indústria do tabaco. Ela opera em várias escalas: produz em países com menos regulação, vende onde ainda há demanda, e atua fortemente no lobby político para evitar restrições legais. Isso lembra os conceitos da localização industrial e dos distritos produtivos discutidos por Markusen.</p>
+          <p>Terceiro, o filme revela o esvaziamento da produção material em favor da manipulação simbólica – algo típico do mundo pós-fordista analisado por Lipietz. A indústria aqui não vende só cigarros, ela vende discursos, liberdade e até dúvida sobre os fatos científicos.</p>
+        </div>
+
+        <div class="bloco">
+          <p class="tempo">[4:11 – 5:20] Personagens e Representações</p>
+          <p>Nick Naylor é quase uma caricatura do trabalhador do século XXI: flexível, retórico, fluido. Ele se encaixa perfeitamente no modelo de acumulação flexível de Benko. O próprio fato de ele mudar de setor ao final do filme – indo para o lobby da indústria de celulares – mostra como a lógica é a mesma: onde houver um produto controverso, haverá alguém para defendê-lo com palavras bem escolhidas.</p>
+        </div>
+
+        <div class="bloco">
+          <p class="tempo">[5:21 – 6:20] Conclusão</p>
+          <p>No fim, <em>Obrigado por Fumar</em> não é apenas sobre cigarros. É sobre como as grandes corporações operam, como moldam o discurso, terceirizam responsabilidades e se reinventam para continuar lucrando. E mais: é um alerta de como a indústria não é mais apenas o que se fabrica, mas o que se comunica.</p>
+          <p>Em tempos de fake news, greenwashing e lobbies farmacêuticos, entender a lógica por trás do filme é essencial para compreender a dinâmica industrial e econômica do nosso tempo.</p>
+        </div>
+
+        <div class="bloco">
+          <p class="tempo">[6:21 – 6:40] Fechamento</p>
+          <p>Se você gostou dessa análise, recomendo que assista ao filme com um novo olhar. E lembre-se: nem todo produto que mata vem com caveira na embalagem — às vezes, vem com um bom discurso.</p>
+          <p>Obrigado por assistir!</p>
+        </div>
+      </div>
+    </details>
+
+    <details open>
+      <summary>Tópico 3 - Podcast</summary>
+      <div>
+        <h2>Podcast: A Nova Indústria Brasil em Foco</h2>
+        <p class="podcast-info"><strong>Notícia escolhida:</strong> <a href="https://agenciadenoticias.bndes.gov.br/bndes/BNDES-amplia-para-R$-300-bi-investimento-na-Nova-Industria-Brasil/" target="_blank" rel="noopener noreferrer">BNDES AMPLIA PARA R$ 300 BI INVESTIMENTO NA NOVA INDÚSTRIA BRASIL (Clique Aqui)</a></p>
+
+        <div class="media-container">
+          <h3>Escute o Podcast!</h3>
+          <div class="audio-player-container">
+            <audio controls>
+              <source src="Audio_PodCast.m4a" type="audio/mp4">
+              Seu navegador não suporta o elemento de áudio.
+            </audio>
+          </div>
+        </div>
+
+        <div class="bloco">
+          <h3 class="with-download-link">
+            Roteiro do Podcast
+            <a href="Roteiro PodCast.pdf" download="Roteiro PodCast.pdf">Download PDF</a>
+          </h3>
+          <div class="bloco-roteiro-podcast">
+            <strong>Introdução (Enrico):</strong>
+            <p>"Olá a todos e bem-vindos ao podcast de Geografia da Indústria! Hoje, vamos mergulhar em uma notícia super relevante e conectá-la com temas cruciais que estudamos em sala."</p>
+            <p><strong>Notícia Central:</strong> "O BNDES anunciou um investimento de R$ 300 bilhões na Nova Indústria Brasil (NIB). Um plano ambicioso para modernizar, tornar sustentável e descentralizar a indústria do país."</p>
+            <p><strong>Temas Conectados:</strong> "Essa iniciativa se alinha diretamente com três pilares da nossa disciplina: a reconfiguração espacial da indústria, o processo de desindustrialização e reindustrialização, e o papel do Estado no planejamento econômico."</p>
+          </div>
+
+          <div class="bloco-roteiro-podcast">
+            <strong>Tema 1: Reconfiguração Espacial da Indústria Brasileira (Eduardo, Alan):</strong>
+            <p><strong>Contexto Histórico:</strong> "Historicamente, a indústria brasileira se concentrou no eixo Rio-São Paulo. Apesar de uma dispersão inicial a partir dos anos 90, muitas novas unidades eram de montagem e baixa densidade tecnológica. O comando e os centros de decisão permaneceram no Sudeste."</p>
+            <p><strong>Objetivo da NIB:</strong> "A NIB busca mudar esse cenário, propondo espalhar investimentos em polos produtivos por todas as regiões, abrangendo frentes como energia, agroindústria e digitalização."</p>
+            <p><strong>Desafio da Descentralização:</strong> "A simples descentralização física não basta. Para que seja efetiva, a criação de novos polos industriais exige preparação da região: infraestrutura básica, formação técnica qualificada, fomento à inovação regional (conexão com universidades) e garantia de sustentabilidade a médio prazo."</p>
+            <p><strong>Risco das 'Ilhas Industriais':</strong> "Sem logística integrada e redes locais de fornecedores, essas novas fábricas podem virar 'ilhas industriais', desconectadas do sistema nacional de produção e valor, falhando em integrar as regiões."</p>
+          </div>
+
+          <div class="bloco-roteiro-podcast">
+            <strong>Tema 2: Desindustrialização e Reindustrialização (Enrico, Eduardo, Alan):</strong>
+            <p><strong>Desindustrialização Precoce:</strong> "A desindustrialização no Brasil começou cedo demais, antes de consolidarmos uma base produtiva sólida e diversificada. Isso comprometeu nosso dinamismo econômico e nos deixou vulneráveis à dependência externa."</p>
+            <p><strong>Queda da Indústria no PIB:</strong> "Nos anos 80, a indústria de transformação representava 25% do PIB; hoje, apenas 11%. Essa queda não é só um número, mas a perda de capacidade de transformação e inovação, impactando a economia como um todo."</p>
+            <p><strong>Consequências Sociais:</strong> "As consequências são visíveis: empregos mais precários, maior vulnerabilidade às importações e desarticulação regional."</p>
+            <p><strong>NIB como Resposta:</strong> "A Nova Indústria Brasil surge nesse contexto, buscando uma neo-industrialização focada em inovação, sustentabilidade e digitalização, olhando para o futuro e não para modelos do passado."</p>
+            <p><strong>Efetividade do Investimento:</strong> "A grande questão é: 300 bilhões de reais são suficientes para reindustrializar o país? Depende da alocação."</p>
+            <p><strong>Alocação Estratégica:</strong> "Se o investimento focar em setores estratégicos (semicondutores, saúde, máquinas, transição energética) e estimular a inovação nacional, pode funcionar. Mas se concentrar em grandes grupos sem gerar encadeamento produtivo, será apenas um aumento da dívida sem retorno."</p>
+            <p><strong>Conexão com o Território:</strong> "Sem conexão com o território e redes nacionais (pequenos e médios fornecedores, pesquisa, formação técnica local), essas indústrias correm o risco de se tornarem 'ilhas de excelência' em meio à desigualdade."</p>
+          </div>
+
+          <div class="bloco-roteiro-podcast">
+            <strong>Tema 3: O Papel do Estado no Planejamento Econômico (Eduardo, Enrico, Alan):</strong>
+            <p><strong>Retorno da Política Industrial:</strong> "A NIB marca o retorno de uma política industrial planejada, com metas de médio e longo prazo, diferente das tentativas pontuais anteriores."</p>
+            <p><strong>Abordagem Inovadora:</strong> "Com foco em missões como descarbonização, soberania digital, reindustrialização verde e fortalecimento da saúde nacional, inspirando-se em modelos internacionais de sucesso (UE, Coreia do Sul)."</p>
+            <p><strong>Desafio Orçamentário:</strong> "Como conciliar investimentos tão ambiciosos com as restrições fiscais e críticas aos gastos governamentais, especialmente com o arcabouço fiscal atual?"</p>
+            <p><strong>Prioridade Estratégica:</strong> "A resposta está em priorizar a política industrial como um investimento estratégico, e não apenas um gasto. O orçamento pode ser organizado via BNDES, compras públicas ou incentivos calibrados."</p>
+            <p><strong>Exigência de Contrapartidas:</strong> "O papel do Estado é fundamental ao exigir contrapartidas do setor privado (resultados, inovação, desenvolvimento econômico e social nas regiões) para que a política industrial não se resuma a repasses de recursos."</p>
+            <p><strong>Execução e Governança:</strong> "O planejamento precisa sair do papel. É essencial criar mecanismos de governança, com metas claras, cronogramas factíveis e indicadores de longo prazo para acompanhar os resultados."</p>
+            <p><strong>Articulação Federativa:</strong> "A política industrial não pode ser centralizada. Dada a dimensão e desigualdade do Brasil, é crucial envolver estados e municípios para que o plano se conecte com a realidade local."</p>
+            <p><strong>Ecossistema Abrangente:</strong> "Industrialização vai além de montar fábricas. Envolve formação técnica, educação profissional, pesquisa aplicada, inovação, desenvolvimento de startups e um ecossistema completo para que os novos polos não dependam das matrizes existentes."</p>
+            <p><strong>Continuidade e Visão de Estado:</strong> "Essa iniciativa exige continuidade, não apenas no governo atual, mas como uma visão de Estado, para garantir a estabilidade e o desenvolvimento do país."</p>
+          </div>
+
+          <div class="bloco-roteiro-podcast">
+            <strong>Conclusão (Eduardo/Enrico/Alan):</strong>
+            <p><strong>Pontos Chave da NIB:</strong> "O processo de implantação da NIB é complexo e se resume em três pontos principais: o redesenho do mapa industrial, a superação da desindustrialização precoce e o resgate de um planejamento estatal estratégico."</p>
+            <p><strong>Sucesso Depende de Detalhes:</strong> "O sucesso depende de como e onde os recursos serão aplicados, com foco na complexidade produtiva e na inclusão regional."</p>
+            <p><strong>Mensagem Final:</strong> "Fica o desafio de pensar um Brasil industrial não como um retorno ao passado, mas como a criação de um novo modelo produtivo: mais robusto, sustentável e que conecte território, inovação e desenvolvimento social."</p>
+          </div>
+
+        </div>
+
+      </div>
+    </details>
+
+    <details open>
+      <summary>Tópico 4 - Sarau</summary>
+      <div>
+        <h2>Sarau - Produção Artística</h2>
+
+        <div class="sarau-container">
+          <div class="sarau-image-display">
+              <h3>Visualização da Produção Artística</h3>
+              <img src="https://iili.io/FVpVu9a.md.png" alt="Produção Artística Sarau">
+          </div>
+
+          <h3 class="with-download-link">
+            Produção Artística (Descrição)
+            <a href="Sarau.pdf" download="Sarau.pdf">Download PDF</a>
+          </h3>
+          <div class="sarau-item-content">
+            <h4>Título da obra:</h4>
+            <p>“Ciclos Industriais do Brasil: Da Terra ao Futuro”</p>
+            <h4>Justificativa e inspiração da produção:</h4>
+            <p>Esta imagem representa visualmente o processo de industrialização brasileira e está diretamente inspirada nos principais temas discutidos ao longo da disciplina de Geografia das Indústrias. Cada elemento carrega um significado:</p>
+            <p>O planeta Terra ao fundo simboliza a globalização e a inserção periférica do Brasil nos circuitos internacionais de produção, como discutido nas leituras de Benko (1996) e Carlos (1988). A posição periférica brasileira nos processos industriais está ligada ao que Lipietz chama de “fordismo periférico”, abordado nas aulas sobre o modelo fordista e pós-fordista.</p>
+            <p>A fábrica, central na imagem, representa o modelo clássico de industrialização no Brasil, que se concentrou em grandes centros urbanos. Isso se relaciona com o texto de Monteiro Neto et al. (2021), que aborda as espacialidades da indústria brasileira e o fenômeno da concentração produtiva nas regiões Sudeste e Sul.</p>
+            <p>A engrenagem, ao lado da fábrica, remete aos conceitos de reestruturação produtiva, acumulação flexível e distritos industriais (como tratado por Markusen, 1995), elementos fundamentais na adaptação da indústria brasileira ao cenário pós-fordista e à concorrência internacional.</p>
+            <p>O gráfico com seta de crescimento sugere a busca por um projeto de desenvolvimento industrial mais justo, inovador e sustentável, como discutido nos textos de Pereira Jr. (2022) e Gomes (2020). Ele evoca também os tecnopolos e polos de desenvolvimento abordados por Benko e Santos, além do debate sobre os desafios da Indústria 4.0.</p>
+            <p>Essa produção gráfica foi inspirada pela vontade de representar, de forma simbólica, a evolução histórica, os desafios territoriais e as perspectivas de futuro da indústria no Brasil. O traço simples e em preto e branco remete à ideia de que o país ainda está desenhando, seu projeto industrial, cabendo à sociedade e aos formuladores de políticas decidir como e para onde crescer.</p>
+          </div>
+
+          <div class="sarau-item-content">
+            <h4>Música:</h4>
+            <p>Parque Industrial - Gilberto Gil</p>
+            <iframe class="spotify-embed" style="border-radius:12px" src="https://open.spotify.com/embed/track/3dDVLUMISlTSWXUGhwgTWt?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
+            <h4>História:</h4>
+            <p>Primeira indústria Têxtil do Brasil (155 Anos)</p>
+            <img src="https://ogimg.infoglobo.com.br/in/25190891-f42-0f5/FT1086A/760/95056339_RI-Paracambi-RJ-01-09-20121-Primeira-fabrica-textil-do-Brasil-completa-150-anos-Em-1870-foi.jpg?posicaoFoto1" alt="Primeira indústria Têxtil do Brasil">
+
+            <h4>Arte:</h4>
+            <p>Operários de Tarsila do Amaral</p>
+            <img src="https://cdn.culturagenial.com/imagens/sotsilogiya-cke.jpg?class=article" alt="Operários de Tarsila do Amaral">
+          </div>
+        </div>
+      </div>
+    </details>
+  </main>
+
+  <footer>
+    <p>Portfólio desenvolvido por Alan Dutra, para a disciplina de Geografia das Indústrias – UEM – 2025.</p>
+  </footer>
+
+</body>
 </html>
