@@ -156,9 +156,13 @@
 
     /* Estilo para os botões de download (aplicado em h4 a e h3 a) */
     .fichamento-item h4 a,
+    .analise-setorial a,
+    .with-download-link a,
     .bloco-roteiro-podcast h3 a, /* Altera para a nova classe de roteiro do podcast */
     .sarau-container h3 a, /* Adicionado para o sarau (aqui é o link do título da seção) */
-    .sarau-image-display .download-button-standalone { /* Botão de download abaixo da imagem visualizada */
+    .sarau-image-display .download-button-standalone, /* Botão de download abaixo da imagem visualizada */
+    .sintese-item h4 a, /* Adicionado para os botões de download das sínteses */
+    .analise-setorial .download-button-standalone { /* Adicionado para o botão de download da análise setorial */
         font-size: 0.8em;
         color: var(--cor-principal);
         text-decoration: none;
@@ -173,7 +177,9 @@
     .fichamento-item h4 a:hover,
     .bloco-roteiro-podcast h3 a:hover, /* Altera para a nova classe de roteiro do podcast */
     .sarau-container h3 a:hover, /* Adicionado para o sarau */
-    .sarau-image-display .download-button-standalone:hover { /* Botão de download abaixo da imagem visualizada */
+    .sarau-image-display .download-button-standalone:hover, /* Botão de download abaixo da imagem visualizada */
+    .sintese-item h4 a:hover, /* Adicionado para os botões de download das sínteses */
+    .analise-setorial .download-button-standalone:hover { /* Adicionado para o botão de download da análise setorial */
         background-color: var(--cor-principal);
         color: #fff;
     }
@@ -363,6 +369,71 @@
         max-width: 100%; /* Garante que não ultrapasse a largura do container */
     }
 
+    /* Estilos para o Tópico 5 - Sínteses */
+    .sintese-item {
+        background: var(--cor-bloco-fundo);
+        padding: 1.5em;
+        border-left: 5px solid #110d54; /* Cor de destaque para sínteses, exemplo: amarelo/laranja */
+        margin-bottom: 1.8em;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        border-radius: 4px;
+    }
+    .sintese-item h4 { /* Estilo para o título de cada síntese (Síntese 1 - Título) */
+        color: var(--cor-principal);
+        font-size: 1.2em;
+        margin-top: 0;
+        margin-bottom: 0.8em;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 0.5em;
+        display: flex; /* Para alinhar título e botão de download se houver */
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .sintese-item p {
+        margin-bottom: 1em;
+    }
+
+    /* Estilos para o Tópico 6 - Tipo de Indústria Brasileira */
+    .analise-setorial {
+        background: var(--cor-bloco-fundo);
+        padding: 1.5em;
+        border-left: 5px solid #17a2b8; /* Cor de destaque para análises, exemplo: azul claro */
+        margin-bottom: 1.8em;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        border-radius: 4px;
+    }
+    .analise-setorial h4 { /* Título do tipo de indústria e botão de download */
+        color: var(--cor-principal);
+        font-size: 1.2em;
+        margin-top: 0;
+        margin-bottom: 0.8em;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 0.5em;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .analise-setorial p {
+        margin-bottom: 1em;
+    }
+    .analise-setorial ul {
+        margin-bottom: 1em;
+        padding-left: 1.5em;
+    }
+    .analise-setorial ul li {
+        margin-bottom: 0.5em;
+    }
+    .analise-setorial img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 2em auto; /* Centraliza a imagem e dá espaço */
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
 
     footer {
       margin-top: 3em;
@@ -400,7 +471,7 @@
         details > div {
             padding: 1em;
         }
-        .bloco, .bloco-roteiro-podcast, .sarau-container { /* Incluído sarau-container aqui */
+        .bloco, .bloco-roteiro-podcast, .sarau-container, .sintese-item, .analise-setorial { /* Incluído analise-setorial aqui */
             padding: 1em;
         }
         .media-container {
@@ -408,15 +479,19 @@
         }
         .fichamento-item h4,
         .bloco h3.with-download-link,
-        .sarau-container h3.with-download-link { /* Garante empilhamento para h3 do sarau também */
+        .sarau-container h3.with-download-link,
+        .sintese-item h4,
+        .analise-setorial h4 { /* Garante empilhamento para h3 e h4 com download link em telas pequenas */
             flex-direction: column;
             align-items: flex-start;
             padding-right: 10px; /* Ajusta padding para telas pequenas */
         }
         .fichamento-item h4 a,
         .bloco h3 a,
-        .sarau-container h3 a, /* Ajusta botões em telas pequenas */
-        .sarau-image-display .download-button-standalone { /* Ajusta o botão standalone em telas pequenas */
+        .sarau-container h3 a,
+        .sarau-image-display .download-button-standalone,
+        .sintese-item h4 a,
+        .analise-setorial .download-button-standalone { /* Ajusta botões em telas pequenas */
             margin-top: 10px;
             margin-left: 0;
             width: fit-content; /* Para não ocupar 100% da largura */
@@ -693,6 +768,64 @@
         </div>
       </div>
     </details>
+
+    <details>
+      <summary>Tópico 5 - Sínteses</summary>
+      <div>
+        <h2>Sínteses da Disciplina</h2>
+
+        <div class="sintese-item">
+          <h4>Síntese 1 - A Trajetória da Industrialização Brasileira</h4>
+          <p>A trajetória da industrialização no Brasil, tema central da aula, percorre desde o início do século XX até os indícios de desindustrialização nas décadas finais do mesmo século. Entre 1901 e 1929, o país iniciou um processo industrial ainda limitado, concentrado em áreas urbanas específicas e financiado principalmente pelos lucros da agricultura voltada à exportação, com destaque para o café. Esse avanço foi fragmentado e refletiu profundas desigualdades regionais.</p>
+          <p>Com a crise de 1929 e a adoção do modelo nacional-desenvolvimentista a partir de 1933, o Brasil passou a adotar políticas de substituição de importações. Esse novo direcionamento resultou em uma expressiva expansão industrial, sobretudo entre os anos de 1950 e 1980, período em que o parque industrial se diversificou, o PIB cresceu e o investimento estrangeiro aumentou significativamente. São Paulo consolidou-se como o polo industrial do país, impulsionado por setores como o automobilístico e o exportador.</p>
+          <p>No entanto, entre 1981 e 1999, o cenário se transformou. A indústria passou por um período de estagnação, em meio a crises econômicas, elevado endividamento externo e políticas de cunho neoliberal — como a abertura ao mercado externo e as privatizações. Esses fatores contribuíram para o enfraquecimento da estrutura produtiva. No final do século XX, já se observavam sinais de desindustrialização, com perda de valor agregado, maior dependência de produtos importados e protagonismo do capital financeiro — caracterizando um processo precoce e estrutural.</p>
+        </div>
+
+        <div class="sintese-item">
+          <h4>Síntese 2 - Transição Fordismo-Pós-Fordismo e Toyotismo</h4>
+          <p>A aula tratou da transição do modelo fordista para o pós-fordista, destacando o impacto do Toyotismo nas estruturas produtivas e geográficas. A crise do fordismo, a partir dos anos 1960, foi marcada por estagnação, inflação e perda de rentabilidade, levando à superação do modelo de produção em massa.</p>
+          <p>Com a globalização e a recessão das décadas de 1970 e 1980, surgiu a Terceira Revolução Industrial, caracterizada pela automação, informatização e novas formas de organização do trabalho. Nesse contexto, o Toyotismo, modelo japonês baseado em melhoria contínua, produção sob demanda e controle visual, ganhou destaque.</p>
+          <p>A produção tornou-se flexível, fragmentada e voltada ao consumo especializado. Isso gerou novas dinâmicas geográficas: descentralização industrial, enfraquecimento do sindicalismo, valorização da inovação tecnológica e transformação das metrópoles em centros de comando técnico e financeiro.</p>
+        </div>
+
+        <div class="sintese-item">
+          <h4>Síntese 3 - Polos de Crescimento e Tecnopolos</h4>
+          <p>A aula abordou como os polos de crescimento e os tecnopolos transformam o espaço geográfico a partir da concentração seletiva de atividades econômicas e tecnológicas. Essa lógica gera desenvolvimento desigual, fragmentando os territórios em zonas hierarquizadas, como destacam autores como Benko e Milton Santos.</p>
+          <p>Com a globalização e a revolução informacional, os tecnopolos — centros que reúnem universidades, empresas e centros de pesquisa, tornaram-se importantes motores de inovação. Contudo, reforçam desigualdades, ao privilegiar regiões com vantagens locacionais e excluir áreas fora dessa lógica.</p>
+          <p>Apesar de impulsionarem o avanço tecnológico, os tecnopolos também revelam contradições: promovem homogeneização espacial, atendem a interesses externos e enfraquecem territórios periféricos, sobretudo nos países em desenvolvimento. A aula ressaltou, portanto, a necessidade de refletir criticamente sobre os efeitos sociais e espaciais dessa nova organização territorial.</p>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>Tópico 6 - Tipo de Indústria Brasileira</summary>
+      <div>
+        <h2>Análise da Indústria Petrolífera Brasileira</h2>
+
+        <div class="analise-setorial">
+            <h4>
+                Tipo: Petrolífera
+                <a href="analise_petrolifera.pdf" download="analise_petrolifera.pdf">Download Análise</a>
+            </h4>
+            <p>A indústria de petróleo no Brasil possui papel estratégico na economia nacional, tanto pela sua relevância energética quanto pelo impacto fiscal e geopolítico. A cadeia produtiva é composta pelas atividades de exploração, extração, refino, distribuição e comercialização, sendo fortemente liderada pela Petrobras, estatal que historicamente teve papel central no desenvolvimento do setor.</p>
+            <p>A descoberta do pré-sal, a partir de 2006, marcou um novo ciclo de expansão da indústria, colocando o Brasil entre os maiores produtores globais. Essa fronteira tecnológica exigiu altos investimentos em pesquisa e infraestrutura, consolidando o país como referência em exploração em águas profundas e ultraprofundas.</p>
+            <p>Apesar do avanço tecnológico e da crescente produção, o setor enfrenta desafios estruturais e conjunturais. Entre os principais, destacam-se:</p>
+            <ul>
+                <li>A volatilidade dos preços internacionais do petróleo;</li>
+                <li>A dependência da exportação de óleo cru, com baixo valor agregado;</li>
+                <li>A necessidade de modernização do parque de refino;</li>
+                <li>As tensões entre políticas de preço interno e interesses fiscais e sociais;</li>
+                <li>A transição energética global, que pressiona o setor a investir em fontes mais limpas.</li>
+            </ul>
+            <p>Além disso, há implicações geográficas importantes: os principais polos de produção se concentram no Sudeste (especialmente no litoral do RJ e SP), enquanto regiões como o Nordeste e o Norte enfrentam dificuldades de inserção mais robusta na cadeia do petróleo, ampliando disparidades regionais.</p>
+            <p>Em resumo, a indústria petrolífera brasileira é ao mesmo tempo uma vantagem estratégica e um campo de tensões econômicas, ambientais e geopolíticas. Seu futuro dependerá da capacidade de adaptação à transição energética, da governança sobre seus recursos e da articulação entre desenvolvimento econômico e sustentabilidade.</p>
+            <img src="https://petrobras.com.br/documents/d/f3a44542-113e-11ee-be56-0242ac120002/petrobras-novas-fronteiras-investimentos-ate-2029" alt="Gráfico de Investimentos Petrobras">
+            <p class="image-source"><em>Fonte: Petrobras</em></p>
+          </div>
+
+      </div>
+    </details>
+
   </main>
 
   <footer>
